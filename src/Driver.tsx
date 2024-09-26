@@ -1,6 +1,7 @@
-import { useEffect, } from 'react';
+import { useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
-const pxToNum = (px: string): Number => Number(px.split('px')[0]);
+const pxToNum = (px: string) => px.split('px')[0];
 
 function measureTypography(elementId: string) {
   const element = document.getElementById(elementId);
@@ -12,7 +13,7 @@ function measureTypography(elementId: string) {
 
   const boundingRect = element.getBoundingClientRect();
   const computedStyle = window.getComputedStyle(element);
-  console.log(computedStyle, computedStyle['font-size' as any]);
+  console.log(computedStyle, computedStyle['font-size'as any] );
   console.log(boundingRect);
 
   const lineHeight = Number(pxToNum(computedStyle['font-size' as any]));
@@ -43,11 +44,30 @@ function measureTypography(elementId: string) {
 
 export default function Driver() {
   useEffect(() => {
-    setTimeout(() => {
-      measureTypography('typography');
-      measureTypography('typography-2');
-    }, 1000);
+    const listIds = getElementsIds('p');
+    console.log({ listIds });
+
+    listIds.forEach((id) => measureTypography(id));
   }, []);
 
   return <></>;
 }
+
+const getElementsIds = (selector: string) => {
+  if (!selector) return [];
+
+  const listIds: Array<string> = [];
+
+  const elementsList = document.querySelectorAll(selector);
+  elementsList.forEach((element) => {
+    const uniqueId = element.id || createId();
+    listIds.push(uniqueId);
+    element.id = uniqueId;
+  });
+
+  return listIds;
+};
+
+const createId = () => {
+  return uuidv4();
+};
