@@ -1,35 +1,80 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { CSSProperties, useEffect, useState } from 'react';
+import './style.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+const pxToNum = (px: string): number => Number(px.split('px')[0]);
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+function measureTypography(elementId: string) {
+  const element = document.getElementById(elementId);
+
+  if (!element) {
+    console.error('Element not found');
+    return;
+  }
+
+  const boundingRect = element.getBoundingClientRect();
+  const computedStyle = window.getComputedStyle(element);
+  console.log(computedStyle.paddingTop, computedStyle.paddingBottom);
+  console.log(boundingRect);
+
+  const lineHeight: any =
+    boundingRect.height -
+    pxToNum(computedStyle.paddingTop) -
+    pxToNum(computedStyle.paddingBottom) -
+    pxToNum(computedStyle.borderTop) -
+    pxToNum(computedStyle.borderBottom);
+
+  const lineTop =
+    boundingRect.top +
+    Number(pxToNum(computedStyle.paddingTop)) +
+    Number(pxToNum(computedStyle.borderTop));
+  console.log({ lineHeight, lineTop });
+
+  return {
+    height: `${lineHeight}px`,
+    top: lineTop,
+  };
 }
 
-export default App
+export default function App() {
+  const [line, setLine] = useState<CSSProperties>({});
+
+  useEffect(() => {
+    setTimeout(() => {
+      const line = measureTypography('typography') as CSSProperties
+      setLine(line);
+    }, 1000);
+  }, []);
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        gap: '20px',
+      }}
+    >
+      <p
+        style={{
+          fontSize: '16px',
+          padding: 10,
+          border: '5px solid blue',
+          margin: 3,
+        }}
+        id="typography"
+      >
+        Typography
+      </p>
+      {line && (
+        <div
+          style={{
+            position: 'absolute',
+            width: '2px',
+            background: 'red',
+            ...line,
+          }}
+        >
+          {}
+        </div>
+      )}
+    </div>
+  );
+}
