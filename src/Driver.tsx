@@ -16,7 +16,7 @@ function measureTypography(elementId: string) {
   console.log(computedStyle, computedStyle['font-size'as any] );
   console.log(boundingRect);
 
-  const lineHeight = Number(pxToNum(computedStyle['font-size' as any]));
+  const lineHeight = Number(pxToNum(computedStyle['line-height' as any]));
 
   const lineTop =
     boundingRect.top +
@@ -28,15 +28,16 @@ function measureTypography(elementId: string) {
     Number(pxToNum(computedStyle.paddingLeft)) -
     Number(pxToNum(computedStyle.borderLeft));
 
-  console.log({ lineHeight, lineTop });
+  console.log({ lineHeight, lineTop }, computedStyle['line-height' as any]);
 
   const line = document.createElement('div');
   line.style.top = `${lineTop}px`;
   line.style.height = `${lineHeight}px`;
   line.style.left = `${lineLeft}px`;
   line.style.position = 'absolute';
-  line.style.backgroundColor = 'red';
+  line.style.backgroundColor = 'yellow';
   line.style.width = '2px';
+  
 
   const parentElement = element.parentElement || document.body;
   parentElement.appendChild(line);

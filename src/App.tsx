@@ -12,9 +12,9 @@ export default function App() {
         <p
           style={{
             fontSize: '16px',
+            lineHeight: '40px',
             padding: 10,
             border: '5px solid blue',
-            margin: 3,
           }}
           id="typography"
         >
@@ -29,8 +29,9 @@ export default function App() {
             style={{
               fontSize: '16px',
               padding: 10,
-              border: '5px solid blue',
               margin: 3,
+              lineHeight: '20px',
+              border: '5px solid blue',
             }}
             id="typography-2"
           >
