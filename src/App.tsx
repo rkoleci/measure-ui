@@ -2,43 +2,15 @@ import Driver from './Driver';
 
 export default function App() {
   return (
-    <>
-      <Driver />
-      <div
-        style={{
-          gap: '20px',
-        }}
-      >
-        <p
-          style={{
-            fontSize: '16px',
-            lineHeight: '40px',
-            padding: 10,
-            border: '5px solid blue',
-          }}
-          id="typography"
-        >
-          Typography
+   <>
+   <Driver />
+   <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', paddingLeft: '10%', paddingRight: '10%',  marginTop: -200, }}>
+     <h1 id='h1' style={{ fontSize: '50px', color: '#DDDEEE' }}>Measure UI Typography - Match Figma Design</h1>
+        <p id='p1' style={{ fontSize: '20px', color: 'green', textAlign: 'center', width: 'fit-content'  }}>
+          This is a paragraph inside the first section.
         </p>
-        <div
-          style={{
-            margin: '24px',
-          }}
-        >
-          <p
-            style={{
-              fontSize: '16px',
-              padding: 10,
-              margin: 3,
-              lineHeight: '20px',
-              border: '5px solid blue',
-            }}
-            id="typography-2"
-          >
-            Typography2
-          </p>
-        </div>
-      </div>
-    </>
+
+    </div>
+   </>
   );
 }
