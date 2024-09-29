@@ -12,7 +12,7 @@ function drawTooltips(boundingRect: DOMRect,  typographyStyle: CSSStyleDeclarati
   const id = createId()
   container.id = id
   setTypographyIds(id)
-  container.textContent = `${typographyStyle.fontSize}\n${typographyStyle.fontWeight}\n${typographyStyle.lineHeight}`;
+  container.textContent = `${typographyStyle.fontSize}\n${typographyStyle.fontWeight}\n${typographyStyle.lineHeight}\n${rgbToHex(typographyStyle.color)}`;
   container.style.position = 'absolute';
   container.style.left = `${boundingRect.left - 55}px`; // Adjust the value as needed
   container.style.top = `${boundingRect.top}px`;
@@ -22,13 +22,12 @@ function drawTooltips(boundingRect: DOMRect,  typographyStyle: CSSStyleDeclarati
   container.style.borderRadius = '4px';
   container.style.whiteSpace = 'pre-wrap'; // Changed to pre-wrap to preserve line breaks
   container.style.textAlign = 'center'
-  container.style.height = '50px'
+  container.style.height = '60px'
   container.style.width = '50px'
   container.style.padding = '0px'
 
-  document.body.appendChild(container);
-
-
+  document.body.appendChild(container);  
+ 
 }
 
 function drawGuideLines(boundingRect: DOMRect, setTypographyIds: (id: string) => void) {
@@ -66,9 +65,7 @@ function measureTypography(elementId: string, setTypographyIds: (id: string) => 
   }
 
   const boundingRect = element.getBoundingClientRect();
-  const computedStyle = window.getComputedStyle(element);
-  console.log(element, computedStyle.fontSize);
-  console.log(boundingRect);
+  const computedStyle = window.getComputedStyle(element); 
 
   const lineHeight = Number(pxToNum(computedStyle.lineHeight));
 
@@ -114,7 +111,7 @@ export default function Driver() {
 
   useEffect(() => {
     if (typography) {
-      const listIds = [...getElementsIds('p'), ...getElementsIds('h1')]
+      const listIds = [...getElementsIds('p'), ...getElementsIds('h1'),...getElementsIds('h2'),...getElementsIds('h3')]
         .filter(id => !id.includes('measure'))
   
     listIds.forEach((id) => measureTypography(id, setTypographyIds));
@@ -148,3 +145,28 @@ const getElementsIds = (selector: string) => {
 const createId = () => {
   return uuidv4();
 };
+
+function rgbToHex(rgb: string): string {
+  // Extract the RGB values using a regular expression
+  const result: RegExpMatchArray | null = rgb.match(/\d+/g);
+
+  if (!result) {
+    throw new Error('Invalid RGB color format');
+  }
+
+  // Convert each RGB value to its hexadecimal equivalent
+  const hex = result
+    .map((value: string) => {
+      const hexValue = parseInt(value).toString(16);
+      // Ensure two digits by padding with '0' if necessary
+      return hexValue.length === 1 ? '0' + hexValue : hexValue;
+    })
+    .join('');
+
+  // Return the hex color code with a leading '#'
+  return `#${hex.toUpperCase()}`;
+}
+
+// Example usage
+const hexColor = rgbToHex('rgb(250,128,114)');
+console.log(hexColor);
